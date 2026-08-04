@@ -1,0 +1,32 @@
+name: zizmor
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/**"
+
+permissions:
+  contents: read
+  security-events: write
+
+jobs:
+  audit:
+    name: Audit workflows
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    concurrency:
+      group: zizmor-${{ github.workflow }}-${{ github.ref }}
+      cancel-in-progress: true
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+
+      - name: Run zizmor
+        uses: zizmorcore/zizmor-action@3dc1ecc9bcb9e94e9b2c709687979e1298497054
+        with:
+          inputs: .github/workflows
+          collect: workflows
+          persona: pedantic
+          online-audits: true
+          advanced-security: true

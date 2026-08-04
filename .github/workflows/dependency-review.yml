@@ -1,0 +1,32 @@
+name: Dependency Review
+
+on:
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  dependency-review:
+    name: Dependency Review
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    concurrency:
+      group: dependency-review-${{ github.workflow }}-${{ github.ref }}
+      cancel-in-progress: true
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+
+      - name: Run dependency review
+        uses: actions/dependency-review-action@a1d282b36b6f3519aa1f3fc636f609c47dddb294
+        with:
+          fail-on-severity: high
+          allow-licenses: MIT,Apache-2.0,BSD-2-Clause,BSD-3-Clause,ISC,CC0-1.0,Unlicense
+          fail-on-scopes: runtime
+          vulnerability-check: true
+          license-check: true

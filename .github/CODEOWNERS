@@ -1,0 +1,4 @@
+# Replace @security-team with the repository's actual security owner handle.
+.github/ @security-team
+scripts/ @security-team
+SECURITY.md @security-team
