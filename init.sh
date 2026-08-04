@@ -186,6 +186,73 @@ export PRODUCTION_WAIT_TIMER_MINUTES="$production_wait"
 export REQUIRED_CHECKS="$required_checks"
 
 init_log "Configuration gathered successfully"
-init_log "Ready for bootstrap phase (Task 3)"
+
+# =============================================================================
+# Phase 6: Bootstrap Execution Phase
+# =============================================================================
+init_log "=== Starting Bootstrap Phase ==="
+
+# Environment variables are already exported above, verify they're set
+init_log "Running bootstrap-security.sh..."
+
+if ! "${script_dir}/scripts/bootstrap-security.sh"; then
+  init_error "Bootstrap failed. Checkpoint saved for resume."
+  exit 1
+fi
+
+init_log "Bootstrap completed successfully."
+
+# Save checkpoint after successful bootstrap
+config_json=$(python -c "
+import json
+config = {
+  'github_repo': '$github_repo',
+  'release_team': '$release_team',
+  'production_reviewers': json.loads('$production_reviewers'),
+  'production_wait': '$production_wait',
+  'required_checks': '$required_checks'
+}
+print(json.dumps(config))
+")
+
+if ! save_checkpoint "bootstrap_complete" "$config_json"; then
+  init_error "Failed to save bootstrap checkpoint"
+  exit 1
+fi
+
+# =============================================================================
+# Phase 7: Template Cleanup Phase
+# =============================================================================
+init_log "=== Cleaning Up Template Artifacts ==="
+
+cleanup_template_files
+
+if ! save_checkpoint "templates_cleaned" "$config_json"; then
+  init_error "Failed to save templates cleanup checkpoint"
+  exit 1
+fi
+
+# =============================================================================
+# Phase 8: Init Script Removal Phase (Optional)
+# =============================================================================
+remove_init_choice=$(prompt_user "Remove init.sh from repository?" "n")
+
+keep_init="false"
+if [[ "$remove_init_choice" != "y" && "$remove_init_choice" != "Y" ]]; then
+  keep_init="true"
+fi
+
+cleanup_init_artifacts "$keep_init"
+
+# =============================================================================
+# Phase 9: Completion Message
+# =============================================================================
+init_log "✓ Repository initialization complete!"
+
+init_log "Next steps:"
+init_log "  1. Review branch protection rules and rulesets: gh repo view --web"
+init_log "  2. Run verify-security.sh to confirm settings: scripts/verify-security.sh"
+init_log "  3. Customize README.md for your project"
+init_log "  4. Set up your development workflow per docs/BRANCH-NAMING.md"
 
 exit 0
