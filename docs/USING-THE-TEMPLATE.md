@@ -1,64 +1,26 @@
 # Using the Secure Repository Template
 
-## Automated Setup (Recommended)
+This guide covers the manual bootstrap details for the security baseline. For the full repo-creation flow, scaffold selection, and handoff steps, use [RUNBOOK.md](../RUNBOOK.md).
 
-The `init.sh` script provides an automated, interactive way to set up your repository with the security baseline. This is the recommended approach for most users.
+## Manual Setup (Advanced Users)
 
-### How it works
-
-The `init.sh` script guides you through a multi-phase setup process:
-
-1. **Environment Check** – verifies required tools are installed (GitHub CLI, Python, Bash)
-2. **Checkpoint Resume** – detects any previous initialization attempts and offers to resume from that point
-3. **Configuration Gathering** – prompts you for configuration values with intelligent defaults:
-   - GitHub repository (auto-detected from current directory)
-   - Release team slug (default: `release-team`)
-   - Production reviewers (JSON format, with smart default based on release team)
-   - Production wait timer in minutes (default: `10`)
-   - Required checks (comma-separated list, default: `CodeQL,Dependency Review`)
-4. **Configuration Summary** – displays all settings for your review and confirmation
-5. **Dry-run Preview** – optionally preview changes without applying them
-6. **Bootstrap Execution** – applies the security baseline to your repository using `scripts/bootstrap-security.sh`
-7. **Template Cleanup** – removes template artifacts (example workflows, test files, etc.)
-8. **Initialization Cleanup** – optionally removes the `init.sh` script itself
-9. **Verification** – displays next steps including running `scripts/verify-security.sh`
-
-### Resumable from Checkpoints
-
-The script saves its progress at key stages, stored in `.init-state.json`. If initialization is interrupted:
-
-```bash
-$ ./init.sh
-Starting repository initialization...
-Checkpoint found from previous initialization
-Resume initialization from checkpoint? (y/n) [y]: y
-Resuming from checkpoint...
-Checkpoint variables loaded
-...
-```
-
-If you choose not to resume, the script starts fresh. Either way, you'll be guided through completion.
+Use the steps below when you want direct control over the bootstrap process.
 
 ### Prerequisites
 
-#### For Automated Setup (Recommended)
+#### Required for all setup modes
 
 - `gh` – GitHub CLI (see https://cli.github.com/)
 - `python` – Python 3 (for JSON parsing and utilities)
 - `bash` – Bash 4.0 or later (standard on macOS and Linux)
 - GitHub authentication: run `gh auth login` first
 
-#### For Manual Setup (Advanced)
+#### Additional tools for manual setup
 
 - GitHub CLI (`gh`) – for querying and modifying repository settings
 - jq – for JSON parsing in scripts
 - curl – for GitHub API calls
 - Bash 4.0 or later
-- GitHub authentication: run `gh auth login` first
-
-## Manual Setup (Advanced Users)
-
-If you prefer to run the initialization steps manually or need more control over the process, you can use the underlying bootstrap script directly.
 
 ### Environment Variables
 
@@ -95,23 +57,6 @@ The bootstrap script accepts the following environment variables:
    scripts/bootstrap-security.sh
    ```
 
-4. **Verify the configuration:**
-   ```bash
-   scripts/verify-security.sh
-   ```
-
-### What the Bootstrap Script Does
-
-The `scripts/bootstrap-security.sh` script applies the security baseline to your repository:
-
-- Enables branch protection rules on main/master branch
-- Configures required status checks based on `REQUIRED_CHECKS`
-- Sets up production deployment protection with wait timers
-- Applies branch naming rules via rulesets
-- Enables automatic dependency updates via Dependabot
-- Configures security scanning (CodeQL, dependency review)
-- Sets appropriate visibility and permissions
-
 ### Verifying the Setup
 
 Run the verification script to confirm all settings were applied correctly:
@@ -129,7 +74,7 @@ This script checks:
 
 ## Next Steps
 
-After setup (automated or manual):
+After setup:
 
 1. **Review settings:** `gh repo view --web` to see your repository on GitHub
 2. **Customize the README:** Update `README.md` with your project details
