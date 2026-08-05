@@ -3,6 +3,6 @@ locals {
   module_description = trimspace(var.description)
   common_tags = merge(var.tags, {
     module     = local.normalized_name
-    managed-by = "terraform"
+    "managed-by" = "terraform"
   })
 }

@@ -43,7 +43,7 @@ Use Helm when the repo should ship Kubernetes manifests as a chart.
 if [ -d scaffolds/helm ]; then
   rsync -a scaffolds/helm/ ./
   helm lint .
-  helm template .
+  helm template test-release .
 else
   echo "Helm scaffold is not available in this checkout yet; it will appear once the later template phase lands."
 fi

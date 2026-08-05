@@ -3,7 +3,7 @@
 Security-first starter template for new repositories.
 
 ```bash
-gh repo create my-org/my-repo --template secure-repo-template --private
+gh repo create my-org/my-repo --template secure-repo-template --private --clone
 cd my-repo
 ./init.sh
 scripts/verify-security.sh

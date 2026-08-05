@@ -6,7 +6,7 @@ Copy these files into a new repository root when you want the repo to start as a
 
 ```bash
 helm lint .
-helm template .
+helm template test-release .
 ```
 
 ## Customize
