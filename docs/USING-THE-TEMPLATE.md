@@ -54,7 +54,7 @@ The bootstrap script accepts the following environment variables:
 
 3. **Run the bootstrap script:**
    ```bash
-   scripts/bootstrap-security.sh
+   ./scripts/bootstrap-security.sh
    ```
 
 ### Verifying the Setup
@@ -62,7 +62,7 @@ The bootstrap script accepts the following environment variables:
 Run the verification script to confirm all settings were applied correctly:
 
 ```bash
-scripts/verify-security.sh
+./scripts/verify-security.sh
 ```
 
 This script checks:
