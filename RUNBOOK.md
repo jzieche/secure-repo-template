@@ -18,7 +18,7 @@ Use this runbook to create a new repository from the template, apply the shared 
 ```bash
 gh auth login
 gh auth status
-gh repo create acme-inc/example-service --template secure-repo-template --private --clone
+gh repo create acme-inc/example-service --template OWNER/secure-repo-template --private --clone
 cd example-service
 ./init.sh
 ./scripts/verify-security.sh
