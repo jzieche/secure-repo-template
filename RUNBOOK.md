@@ -10,8 +10,6 @@ Use this runbook to create a new repository from the template, apply the shared 
 - Access to the target GitHub organization and repository
 - Bash available in the template repo
 - `rsync` installed and on `PATH` before copying scaffold files
-- `helm` installed and on `PATH` if you plan to use the Helm scaffold
-- `terraform` installed and on `PATH` if you plan to use the Terraform scaffold
 - `init.sh` present in the repo root
 - `scripts/verify-security.sh` present under `scripts/`
 
@@ -43,6 +41,8 @@ Replace `OWNER` with the GitHub account or organization that owns the template r
 
 Use Helm when the repo should ship Kubernetes manifests as a chart.
 
+- `helm` installed and on `PATH`
+
 ```bash
 if [ -d scaffolds/helm ]; then
   rsync -a --exclude 'README.md' scaffolds/helm/ ./
@@ -57,6 +57,8 @@ fi
 ### Terraform module
 
 Use Terraform when the repo should publish reusable infrastructure code.
+
+- `terraform` installed and on `PATH`
 
 ```bash
 if [ -d scaffolds/terraform-module ]; then
