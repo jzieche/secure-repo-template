@@ -49,3 +49,14 @@
 - `test -f scaffolds/terraform-module/versions.tf` ✅
 - `rg -n "validation|regexreplace|required_version|terraform fmt -check|terraform validate" scaffolds/terraform-module` ✅
 - `terraform` CLI unavailable in this environment, so Terraform validation was not run.
+
+## Additional fix notes
+
+- Relaxed `scaffolds/terraform-module/variables.tf` so `name` only needs to trim to a non-empty value with at least one alphanumeric character.
+- This now accepts starter names like `vpc_module` and `web.api` while still rejecting punctuation-only input.
+
+## Additional test results
+
+- `test -f scaffolds/terraform-module/versions.tf` ✅
+- `rg -n "validation|regexreplace|required_version|terraform fmt -check|terraform validate" scaffolds/terraform-module` ✅
+- `terraform` CLI still unavailable in this environment, so Terraform validation was not run.
