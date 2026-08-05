@@ -1,0 +1,8 @@
+name        = "example-module"
+description = "Example Terraform module scaffold"
+enabled     = true
+
+tags = {
+  owner = "platform"
+  env   = "dev"
+}
