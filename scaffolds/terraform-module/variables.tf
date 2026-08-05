@@ -3,8 +3,8 @@ variable "name" {
   type        = string
 
   validation {
-    condition     = length(trimspace(var.name)) > 0
-    error_message = "name must not be empty."
+    condition     = can(regex("^[0-9a-z](?:[0-9a-z-]*[0-9a-z])?$", lower(trimspace(var.name))))
+    error_message = "name must start and end with an alphanumeric character and may contain only alphanumerics or hyphens."
   }
 }
 
