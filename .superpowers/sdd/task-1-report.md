@@ -39,3 +39,11 @@
 - Re-ran focused checks: `test -f RUNBOOK.md` passed; `rg -n "gh repo create acme-inc/example-service --template secure-repo-template --private --clone|cd example-service|\\.\\/scripts/verify-security.sh|\\.\\/init.sh" RUNBOOK.md` matched the expected commands.
 - Files changed: `RUNBOOK.md`, `.superpowers/sdd/task-1-report.md`.
 - Remaining concerns: none.
+
+## Final reviewer fix follow-up
+
+- Guarded the Helm and Terraform scaffold copy blocks in `RUNBOOK.md` with `if [ -d ... ]` checks and added explanatory fallback messages for this checkout.
+- Corrected the prerequisites to say `init.sh` is at the repo root and `scripts/verify-security.sh` lives under `scripts/`.
+- Re-ran focused checks: `test -f RUNBOOK.md` passed; `rg -n "\\./scripts/verify-security.sh|if \\[ -d scaffolds/helm \\]|if \\[ -d scaffolds/terraform-module \\]|init.sh|scripts/verify-security.sh" RUNBOOK.md` matched the expected wording and guards.
+- Files changed: `RUNBOOK.md`, `.superpowers/sdd/task-1-report.md`.
+- Remaining concerns: none.

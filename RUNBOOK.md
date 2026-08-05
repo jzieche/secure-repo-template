@@ -9,7 +9,8 @@ Use this runbook to create a new repository from the template, apply the shared 
 - GitHub CLI (`gh`) installed and authenticated
 - Access to the target GitHub organization and repository
 - Bash available in the template repo
-- `init.sh` and `scripts/verify-security.sh` present in the repo root
+- `init.sh` present in the repo root
+- `scripts/verify-security.sh` present under `scripts/`
 
 ## 1) Create the repository
 
@@ -38,9 +39,13 @@ cd example-service
 Use Helm when the repo should ship Kubernetes manifests as a chart.
 
 ```bash
-rsync -a scaffolds/helm/ ./
-helm lint .
-helm template .
+if [ -d scaffolds/helm ]; then
+  rsync -a scaffolds/helm/ ./
+  helm lint .
+  helm template .
+else
+  echo "Helm scaffold is not available in this checkout yet; it will appear once the later template phase lands."
+fi
 ```
 
 ### Terraform module
@@ -48,10 +53,14 @@ helm template .
 Use Terraform when the repo should publish reusable infrastructure code.
 
 ```bash
-rsync -a scaffolds/terraform-module/ ./
-terraform fmt -check
-terraform init -backend=false
-terraform validate
+if [ -d scaffolds/terraform-module ]; then
+  rsync -a scaffolds/terraform-module/ ./
+  terraform fmt -check
+  terraform init -backend=false
+  terraform validate
+else
+  echo "Terraform module scaffold is not available in this checkout yet; it will appear once the later template phase lands."
+fi
 ```
 
 ## 4) Verify and hand off
