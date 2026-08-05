@@ -47,3 +47,10 @@
 - Re-ran focused checks: `test -f RUNBOOK.md` passed; `rg -n "\\./scripts/verify-security.sh|if \\[ -d scaffolds/helm \\]|if \\[ -d scaffolds/terraform-module \\]|init.sh|scripts/verify-security.sh" RUNBOOK.md` matched the expected wording and guards.
 - Files changed: `RUNBOOK.md`, `.superpowers/sdd/task-1-report.md`.
 - Remaining concerns: none.
+
+## Prerequisite tools follow-up
+
+- Added `rsync`, `helm`, and `terraform` to the prerequisites in `RUNBOOK.md` so scaffold-time commands are called out before the Helm and Terraform examples.
+- Re-ran focused checks: `test -f RUNBOOK.md` passed; `rg -n "rsync|helm|terraform|init.sh|scripts/verify-security.sh" RUNBOOK.md` matched all required prerequisites and scaffold commands.
+- Files changed: `RUNBOOK.md`, `.superpowers/sdd/task-1-report.md`.
+- Remaining concerns: none.
