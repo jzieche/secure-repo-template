@@ -9,6 +9,8 @@ cd my-repo
 scripts/verify-security.sh
 ```
 
+Replace `OWNER` with the GitHub account or organization that owns the template repo.
+
 ## Start here
 
 - Read [RUNBOOK.md](./RUNBOOK.md) for the full repo-creation flow.

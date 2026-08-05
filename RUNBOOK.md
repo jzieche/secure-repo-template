@@ -9,7 +9,9 @@ Use this runbook to create a new repository from the template, apply the shared 
 - GitHub CLI (`gh`) installed and authenticated
 - Access to the target GitHub organization and repository
 - Bash available in the template repo
-- `rsync`, `helm`, and `terraform` installed and on `PATH` before running scaffold steps
+- `rsync` installed and on `PATH` before copying scaffold files
+- `helm` installed and on `PATH` if you plan to use the Helm scaffold
+- `terraform` installed and on `PATH` if you plan to use the Terraform scaffold
 - `init.sh` present in the repo root
 - `scripts/verify-security.sh` present under `scripts/`
 
@@ -23,6 +25,8 @@ cd example-service
 ./init.sh
 ./scripts/verify-security.sh
 ```
+
+Replace `OWNER` with the GitHub account or organization that owns the template repo.
 
 ## 2) Complete post-setup work
 
