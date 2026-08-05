@@ -44,6 +44,7 @@ if [ -d scaffolds/helm ]; then
   rsync -a scaffolds/helm/ ./
   helm lint .
   helm template test-release .
+  rm -rf scaffolds/helm
 else
   echo "Helm scaffold is not available in this checkout yet; it will appear once the later template phase lands."
 fi
@@ -59,6 +60,7 @@ if [ -d scaffolds/terraform-module ]; then
   terraform fmt -check
   terraform init -backend=false
   terraform validate
+  rm -rf scaffolds/terraform-module
 else
   echo "Terraform module scaffold is not available in this checkout yet; it will appear once the later template phase lands."
 fi

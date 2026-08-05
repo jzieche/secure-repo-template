@@ -1,25 +1,16 @@
-# Final review fix report
+# Final Review Fix Report
 
 ## What I changed
+- Updated `RUNBOOK.md` so the Helm and Terraform scaffold steps remove their source scaffold directories after copying and validating the scaffold in the repo root.
+- Tightened `scaffolds/terraform-module/variables.tf` name validation so trimmed names must start and end with an alphanumeric character, while allowing only alphanumerics, dots, underscores, and hyphens internally.
 
-- Quoted the Terraform tag key in `scaffolds/terraform-module/main.tf` so the HCL map is valid.
-- Updated Helm examples in `RUNBOOK.md` and `scaffolds/helm/README.md` to use `helm template test-release .`.
-- Added `--clone` to the quick-start `gh repo create` command in `README.md`.
-
-## What I tested
-
-- Ran:
-  `rg -n "managed-by|helm template test-release \\.|gh repo create .*--clone" README.md RUNBOOK.md scaffolds/helm/README.md scaffolds/terraform-module/main.tf`
-- Result: matched all expected updated lines.
-- Terraform CLI was not available in this environment, so `terraform fmt -check` was skipped.
+## What I tested and the results
+- Ran focused `rg` checks for the new `rm -rf` steps and Terraform validation block: passed.
+- Checked for Terraform CLI availability: unavailable in this environment.
 
 ## Files changed
-
-- `README.md`
 - `RUNBOOK.md`
-- `scaffolds/helm/README.md`
-- `scaffolds/terraform-module/main.tf`
+- `scaffolds/terraform-module/variables.tf`
 
 ## Remaining concerns
-
-- None beyond the unavailable Terraform CLI in this environment.
+- Terraform validation could not be executed locally because the Terraform CLI is unavailable here.
