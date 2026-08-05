@@ -32,3 +32,10 @@
 - Re-ran focused checks: `test -f RUNBOOK.md` passed; `rg -n "gh repo create acme-inc/example-service --template secure-repo-template --private --clone|cd example-service|./init.sh|scripts/verify-security.sh" RUNBOOK.md` matched the expected flow.
 - Files changed: `RUNBOOK.md`, `.superpowers/sdd/task-1-report.md`.
 - Remaining concerns: none.
+
+## Re-review fix follow-up
+
+- Updated the verification command in `RUNBOOK.md` to use `./scripts/verify-security.sh`, making it runnable from the repo root without relying on `scripts/` being on `PATH`.
+- Re-ran focused checks: `test -f RUNBOOK.md` passed; `rg -n "gh repo create acme-inc/example-service --template secure-repo-template --private --clone|cd example-service|\\.\\/scripts/verify-security.sh|\\.\\/init.sh" RUNBOOK.md` matched the expected commands.
+- Files changed: `RUNBOOK.md`, `.superpowers/sdd/task-1-report.md`.
+- Remaining concerns: none.

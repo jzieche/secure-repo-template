@@ -19,7 +19,7 @@ gh auth status
 gh repo create acme-inc/example-service --template secure-repo-template --private --clone
 cd example-service
 ./init.sh
-scripts/verify-security.sh
+./scripts/verify-security.sh
 ```
 
 ## 2) Complete post-setup work
