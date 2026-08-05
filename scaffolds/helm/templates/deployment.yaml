@@ -22,3 +22,7 @@ spec:
           ports:
             - name: http
               containerPort: {{ .Values.containerPort }}
+          {{- with .Values.resources }}
+          resources:
+{{ toYaml . | nindent 12 }}
+          {{- end }}
