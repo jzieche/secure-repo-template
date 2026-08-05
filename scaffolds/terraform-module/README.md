@@ -11,3 +11,5 @@ terraform validate
 ```
 
 Add provider-specific resources in `main.tf` after you decide what the module should manage.
+
+When you add a real provider, pin it in `versions.tf` with a `required_providers` block.
