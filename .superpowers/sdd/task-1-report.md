@@ -25,3 +25,10 @@
 ## Issues or concerns
 
 - No blocking concerns.
+
+## Fix follow-up
+
+- Updated the repo creation command in `RUNBOOK.md` to include `--clone` so `cd example-service` and `./init.sh` run against a real local working tree.
+- Re-ran focused checks: `test -f RUNBOOK.md` passed; `rg -n "gh repo create acme-inc/example-service --template secure-repo-template --private --clone|cd example-service|./init.sh|scripts/verify-security.sh" RUNBOOK.md` matched the expected flow.
+- Files changed: `RUNBOOK.md`, `.superpowers/sdd/task-1-report.md`.
+- Remaining concerns: none.
