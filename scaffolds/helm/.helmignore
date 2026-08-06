@@ -1,5 +1,6 @@
 RUNBOOK.mdx
 README.md
+boilerplate.yml
 docs/
 scaffolds/
 init.sh

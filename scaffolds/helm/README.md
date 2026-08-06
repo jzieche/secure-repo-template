@@ -1,15 +1,18 @@
-# Helm Scaffold
+# Helm Boilerplate Template
 
-Copy these files into a new repository root when you want the repo to start as a Helm chart.
+This directory is a [Boilerplate](https://github.com/gruntwork-io/boilerplate) template for generating a Helm chart in the repository root.
 
-## After copying
+## Render the template
+
+```bash
+boilerplate --template-url scaffolds/helm --output-folder . --non-interactive
+```
+
+The template provides local Helm defaults through `boilerplate.yml`, so the rendered chart is valid without extra input.
+
+## Validate the rendered chart
 
 ```bash
 helm lint .
 helm template test-release .
 ```
-
-## Customize
-
-- Rename `example-app` to the real chart name before publishing.
-- Update `image.repository` and `image.tag` for your app.

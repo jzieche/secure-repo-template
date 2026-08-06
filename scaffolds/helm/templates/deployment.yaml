@@ -1,28 +1,28 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "example-app.fullname" . }}
+  name: {{ printf `{{ include "%s.fullname" . }}` .ChartName }}
   labels:
-    {{- include "example-app.labels" . | nindent 4 }}
+    {{ printf `{{- include "%s.labels" . | nindent 4 }}` .ChartName }}
 spec:
-  replicas: {{ .Values.replicaCount }}
+  replicas: {{ `{{ .Values.replicaCount }}` }}
   selector:
     matchLabels:
-      app.kubernetes.io/name: {{ include "example-app.name" . }}
-      app.kubernetes.io/instance: {{ .Release.Name }}
+      app.kubernetes.io/name: {{ printf `{{ include "%s.name" . }}` .ChartName }}
+      app.kubernetes.io/instance: {{ `{{ .Release.Name }}` }}
   template:
     metadata:
       labels:
-        {{- include "example-app.labels" . | nindent 8 }}
+        {{ printf `{{- include "%s.labels" . | nindent 8 }}` .ChartName }}
     spec:
       containers:
-        - name: {{ include "example-app.name" . }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
+        - name: {{ printf `{{ include "%s.name" . }}` .ChartName }}
+          image: "{{ `{{ .Values.image.repository }}` }}:{{ `{{ .Values.image.tag }}` }}"
+          imagePullPolicy: {{ `{{ .Values.image.pullPolicy }}` }}
           ports:
             - name: http
-              containerPort: {{ .Values.containerPort }}
-          {{- with .Values.resources }}
+              containerPort: {{ `{{ .Values.containerPort }}` }}
+          {{ `{{- with .Values.resources }}` }}
           resources:
-{{ toYaml . | nindent 12 }}
-          {{- end }}
+{{ `{{ toYaml . | nindent 12 }}` }}
+          {{ `{{- end }}` }}
