@@ -41,19 +41,23 @@ Run exactly one of the following paths.
 
 ### Helm scaffold (Helm 3.0+)
 
+<Command id="backup-readme-before-helm" command='cd "$REPO_FILES" && mkdir -p .runbook-backups && cp README.md .runbook-backups/README.md' />
+
 <Template id="helm-scaffold" path="scaffolds/helm" target="worktree" />
 
 <Check id="helm-verify" command='cd "$REPO_FILES" && helm lint . && helm template test-release .' />
 
-<Command id="publish-helm-scaffold-notes" command='cd "$REPO_FILES" && git checkout -- README.md && mkdir -p docs && cp scaffolds/helm/README.md docs/HELM-SCAFFOLD.md && rm -rf scaffolds/helm scaffolds/terraform-module' />
+<Command id="publish-helm-scaffold-notes" command='cd "$REPO_FILES" && cp .runbook-backups/README.md README.md && mkdir -p docs && cp scaffolds/helm/README.md docs/HELM-SCAFFOLD.md && rm -rf .runbook-backups scaffolds/helm scaffolds/terraform-module' />
 
 ### Terraform module scaffold (Terraform 1.6.0+)
+
+<Command id="backup-readme-before-terraform" command='cd "$REPO_FILES" && mkdir -p .runbook-backups && cp README.md .runbook-backups/README.md' />
 
 <Template id="terraform-scaffold" path="scaffolds/terraform-module" target="worktree" />
 
 <Check id="terraform-verify" command='cd "$REPO_FILES" && terraform fmt -check && terraform init -backend=false && terraform validate' />
 
-<Command id="publish-terraform-scaffold-notes" command='cd "$REPO_FILES" && git checkout -- README.md && mkdir -p docs && cp scaffolds/terraform-module/README.md docs/TERRAFORM-MODULE-SCAFFOLD.md && rm -rf scaffolds/helm scaffolds/terraform-module' />
+<Command id="publish-terraform-scaffold-notes" command='cd "$REPO_FILES" && cp .runbook-backups/README.md README.md && mkdir -p docs && cp scaffolds/terraform-module/README.md docs/TERRAFORM-MODULE-SCAFFOLD.md && rm -rf .runbook-backups scaffolds/helm scaffolds/terraform-module' />
 
 ## 4) Verify and hand off
 
