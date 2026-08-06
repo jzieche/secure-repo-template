@@ -1,6 +1,7 @@
 variable "name" {
   description = "Name used to identify the module."
   type        = string
+  default     = {{ printf "%q" .Name }}
 
   validation {
     condition     = can(regex("^[A-Za-z0-9](?:[A-Za-z0-9_.-]*[A-Za-z0-9])?$", trimspace(var.name)))

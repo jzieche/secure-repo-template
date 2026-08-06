@@ -2,6 +2,7 @@ variables:
   - name: Name
     description: Name used to identify the Terraform module
     type: string
+    default: example-module
     validations:
       - required
       - regex("^[A-Za-z0-9](?:[A-Za-z0-9_.-]*[A-Za-z0-9])?$")

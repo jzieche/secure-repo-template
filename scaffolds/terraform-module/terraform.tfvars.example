@@ -1,8 +1,5 @@
 name        = "example-module"
-description = "Example Terraform module scaffold"
+description = ""
 enabled     = true
 
-tags = {
-  env   = "dev"
-  owner = "platform"
-}
+tags = {}
