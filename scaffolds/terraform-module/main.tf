@@ -1,5 +1,5 @@
 locals {
-  normalized_name = regexreplace(lower(trimspace(var.name)), "[^0-9a-z-]", "-")
+  normalized_name = replace(replace(lower(trimspace(var.name)), "_", "-"), ".", "-")
   module_description = trimspace(var.description)
   common_tags = merge(var.tags, {
     module     = local.normalized_name

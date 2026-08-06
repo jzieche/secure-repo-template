@@ -2,6 +2,8 @@ RUNBOOK.md
 README.md
 docs/
 scaffolds/
+init.sh
+scripts/
 .superpowers/
 .github/
 SECURITY.md
