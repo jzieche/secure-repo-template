@@ -86,9 +86,16 @@ After setup:
 
 After following the runbook and generating a repo, validate the rendered scaffold with the toolchain that matches the chosen path:
 
+#### Helm scaffold
+
 ```bash
 helm lint .
 helm template test-release .
+```
+
+#### Terraform module scaffold
+
+```bash
 terraform fmt -check
 terraform init -backend=false
 terraform validate
