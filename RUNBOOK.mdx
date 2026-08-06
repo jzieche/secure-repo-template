@@ -2,6 +2,8 @@
 
 Use this runbook to create a new repository from the template, apply the shared security baseline, choose one scaffold, and verify the result.
 
+<GitHubAuth id="gh-auth" title="Authenticate to GitHub" />
+
 ## 1) Create the repository
 
 <Inputs id="repo-config">
@@ -18,34 +20,11 @@ Visibility:
   default: private
 </Inputs>
 
-<Command
-  id="verify-gh-auth"
-  title="Verify GitHub authentication"
-  description="Confirm GitHub CLI authentication before creating a repository."
-  command="gh auth status"
-  successMessage="GitHub CLI authentication is ready."
-  failMessage="GitHub CLI is not authenticated. Run 'gh auth login' and retry."
-/>
+<Command id="create-repo" githubAuthId="gh-auth" inputsId="repo-config" path="scripts/runbook/create-repo-from-template.sh" />
 
-<Command
-  id="create-repo-from-template"
-  title="Create repository from template"
-  description="Create and clone the new repository from the secure template."
-  inputsId="repo-config"
-  path="scripts/runbook/create-repo-from-template.sh"
-  successMessage="Repository created and cloned."
-  failMessage="Failed to create repository from template."
-/>
+<GitClone id="clone-new-repo" githubAuthId="gh-auth" prefilledUrl="https://github.com/{{ .inputs.OrgName }}/{{ .inputs.RepoName }}" prefilledLocalPath="./{{ .inputs.RepoName }}" />
 
-<Command
-  id="initialize-repo"
-  title="Run initialization and baseline verification"
-  description="Run init.sh and verify the secure baseline in the new repository."
-  inputsId="repo-config"
-  path="scripts/runbook/initialize-repo.sh"
-  successMessage="Initialization completed and baseline verification passed."
-  failMessage="Initialization or verification failed. Review the command output."
-/>
+<Command id="initialize-repo" githubAuthId="gh-auth" path="scripts/runbook/initialize-repo.sh" />
 
 ## 2) Complete post-setup work
 
@@ -62,27 +41,15 @@ Run exactly one of the following paths.
 
 ### Helm scaffold (Helm 3.0+)
 
-<Command
-  id="apply-helm-scaffold"
-  title="Apply Helm scaffold"
-  description="Copy the Helm scaffold into the repository root, keep scaffold notes in docs, validate, and remove scaffold source directories."
-  inputsId="repo-config"
-  path="scripts/runbook/apply-helm-scaffold.sh"
-  successMessage="Helm scaffold applied and validated."
-  failMessage="Helm scaffold setup failed."
-/>
+<Template id="helm-scaffold" path="scaffolds/helm" target="worktree" />
+
+<Check id="helm-verify" command='cd "$REPO_FILES" && helm lint . && helm template test-release .' />
 
 ### Terraform module scaffold (Terraform 1.6.0+)
 
-<Command
-  id="apply-terraform-scaffold"
-  title="Apply Terraform module scaffold"
-  description="Copy the Terraform module scaffold into the repository root, keep scaffold notes in docs, validate, and remove scaffold source directories."
-  inputsId="repo-config"
-  path="scripts/runbook/apply-terraform-scaffold.sh"
-  successMessage="Terraform scaffold applied and validated."
-  failMessage="Terraform scaffold setup failed."
-/>
+<Template id="terraform-scaffold" path="scaffolds/terraform-module" target="worktree" />
+
+<Check id="terraform-verify" command='cd "$REPO_FILES" && terraform fmt -check && terraform init -backend=false && terraform validate' />
 
 ## 4) Verify and hand off
 
@@ -93,7 +60,7 @@ Run exactly one of the following paths.
 
 ## Troubleshooting
 
-- If `gh auth status` fails, run `gh auth login` and retry.
+- If GitHub authentication fails, retry the runbook auth step before creating the repository.
 - If repository setup fails, confirm your GitHub token has the required permissions.
-- If scaffold validation fails, confirm the required tool is installed and rerun the selected scaffold command.
-- If release-team or reviewer values are incorrect, rerun `./init.sh` in the new repository.
+- If scaffold validation fails, confirm the required tool is installed and rerun the selected scaffold path.
+- If release-team or reviewer values are incorrect, rerun `./init.sh` in the cloned repository.

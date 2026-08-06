@@ -2,14 +2,7 @@
 
 Security-first starter template for new repositories.
 
-```bash
-gh repo create my-org/my-repo --template OWNER/secure-repo-template --private --clone
-cd my-repo
-./init.sh
-./scripts/verify-security.sh
-```
-
-Replace `OWNER` with the GitHub account or organization that owns the template repo.
+Start with [RUNBOOK.mdx](./RUNBOOK.mdx) for the supported repository creation, cloning, scaffold selection, and verification flow.
 
 ## Start here
 
