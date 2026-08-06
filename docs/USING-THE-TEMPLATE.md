@@ -84,19 +84,31 @@ After setup:
 
 ### Validation
 
-After following the runbook and generating a repo, validate the rendered scaffold with the toolchain that matches the chosen path:
+After following the runbook and generating a repo, validate the cloned repository with the toolchain that matches the chosen path:
 
 #### Helm scaffold
 
 ```bash
-boilerplate --template-url scaffolds/helm --output-folder /tmp/secure-repo-template-helm --non-interactive
-helm lint /tmp/secure-repo-template-helm
-helm template test-release /tmp/secure-repo-template-helm
+helm lint .
+helm template test-release .
 ```
 
 #### Terraform module scaffold
 
 ```bash
+terraform fmt -check
+terraform init -backend=false
+terraform validate
+```
+
+### Branch smoke test used for this change
+
+The branch smoke test also rendered the templates into temp directories to confirm the Boilerplate scaffolds themselves:
+
+```bash
+boilerplate --template-url scaffolds/helm --output-folder /tmp/secure-repo-template-helm --non-interactive
+helm lint /tmp/secure-repo-template-helm
+helm template test-release /tmp/secure-repo-template-helm
 boilerplate --template-url scaffolds/terraform-module --output-folder /tmp/secure-repo-template-terraform --non-interactive
 cd /tmp/secure-repo-template-terraform
 terraform fmt -check
