@@ -41,11 +41,12 @@ Replace `OWNER` with the GitHub account or organization that owns the template r
 
 Use Helm when the repo should ship Kubernetes manifests as a chart.
 
-- `helm` installed and on `PATH`
+- Helm 3.0+ installed and on `PATH`
 
 ```bash
 if [ -d scaffolds/helm ]; then
   rsync -a --exclude 'README.md' scaffolds/helm/ ./
+  cp scaffolds/helm/README.md docs/HELM-SCAFFOLD.md
   helm lint .
   helm template test-release .
   rm -rf scaffolds/helm scaffolds/terraform-module
@@ -58,11 +59,12 @@ fi
 
 Use Terraform when the repo should publish reusable infrastructure code.
 
-- `terraform` installed and on `PATH`
+- Terraform 1.6.0+ installed and on `PATH`
 
 ```bash
 if [ -d scaffolds/terraform-module ]; then
   rsync -a --exclude 'README.md' scaffolds/terraform-module/ ./
+  cp scaffolds/terraform-module/README.md docs/TERRAFORM-MODULE-SCAFFOLD.md
   terraform fmt -check
   terraform init -backend=false
   terraform validate
