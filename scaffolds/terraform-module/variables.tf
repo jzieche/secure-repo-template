@@ -1,7 +1,6 @@
 variable "name" {
   description = "Name used to identify the module."
   type        = string
-  default     = {{ printf "%q" .Name }}
 
   validation {
     condition     = can(regex("^[A-Za-z0-9](?:[A-Za-z0-9_.-]*[A-Za-z0-9])?$", trimspace(var.name)))
@@ -24,7 +23,8 @@ variable "enabled" {
 variable "tags" {
   description = "Tags to attach to resources created by the module."
   type        = map(string)
-  default = {
+{{- if .Tags }}
+  default     = {
 {{- $keys := keys .Tags | sortAlpha }}
 {{- $width := 0 }}
 {{- range $key := $keys }}
@@ -34,4 +34,7 @@ variable "tags" {
     {{ printf "%-*s = %q" $width (printf "%q" $key) (index $.Tags $key) }}
 {{- end }}
   }
+{{- else }}
+  default     = {}
+{{- end }}
 }

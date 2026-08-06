@@ -2,7 +2,6 @@ variables:
   - name: Name
     description: Name used to identify the Terraform module
     type: string
-    default: example-module
     validations:
       - required
       - regex("^[A-Za-z0-9](?:[A-Za-z0-9_.-]*[A-Za-z0-9])?$")
@@ -10,7 +9,7 @@ variables:
   - name: Description
     description: Description for the Terraform module
     type: string
-    default: Example Terraform module scaffold
+    default: ""
 
   - name: Enabled
     description: Whether the module should be enabled by default
@@ -20,9 +19,7 @@ variables:
   - name: Tags
     description: Default tags to attach to resources created by the module
     type: map
-    default:
-      env: dev
-      owner: platform
+    default: {}
 
   - name: RequiredVersion
     description: Terraform CLI version constraint for the module
