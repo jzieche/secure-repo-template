@@ -103,7 +103,7 @@ terraform validate
 
 ### Branch smoke test used for this change
 
-The branch smoke test also rendered the templates into temp directories to confirm the Boilerplate scaffolds themselves:
+From the template repository root, the branch smoke test also rendered the templates into temp directories to confirm the Boilerplate scaffolds themselves:
 
 ```bash
 boilerplate --template-url scaffolds/helm --output-folder /tmp/secure-repo-template-helm --non-interactive
