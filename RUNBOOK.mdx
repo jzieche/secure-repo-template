@@ -7,17 +7,28 @@ Use this runbook to create a new repository from the template, apply the shared 
 ## 1) Create the repository
 
 <Inputs id="repo-config">
-OrgName:
-  description: GitHub organization name
-RepoName:
-  description: New repository name
-TemplateOwner:
-  description: Owner of the secure-repo-template repository
-  default: gruntwork-io
-Visibility:
-  description: Repository visibility
-  options: [private, public]
-  default: private
+```yaml
+variables:
+  - name: OrgName
+    description: GitHub organization name
+    validations:
+      - required
+
+  - name: RepoName
+    description: New repository name
+    validations:
+      - required
+
+  - name: TemplateOwner
+    description: Owner of the secure-repo-template repository
+    default: gruntwork-io
+
+  - name: Visibility
+    description: Repository visibility
+    type: enum
+    options: [private, public]
+    default: private
+```
 </Inputs>
 
 <Command id="create-repo" githubAuthId="gh-auth" inputsId="repo-config" path="scripts/runbook/create-repo-from-template.sh" />
