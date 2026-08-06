@@ -10,7 +10,7 @@ output "description" {
 
 output "enabled" {
   description = "Whether the module is enabled."
-  value       = var.enabled
+  value       = local.module_enabled
 }
 
 output "tags" {

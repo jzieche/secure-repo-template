@@ -1,15 +1,39 @@
-# Terraform Module Scaffold
+# Terraform Boilerplate Template
 
-Copy these files into a new repository root when you want the repo to start as a Terraform module.
+This directory is a [Boilerplate](https://github.com/gruntwork-io/boilerplate) template for generating a Terraform module in the repository root.
 
-After copying:
+## Render the template
+
+```bash
+boilerplate --template-url scaffolds/terraform-module --output-folder . --non-interactive
+```
+
+The template provides local Terraform defaults through `boilerplate.yml`, so the rendered module is valid without extra input.
+
+## Template variables
+
+The template exposes:
+
+- `Name`
+- `Description`
+- `Enabled`
+- `Tags`
+- `RequiredVersion`
+- `RequiredProviders`
+
+Use `RequiredProviders` when you want `versions.tf` to render provider constraints. Supply it as a YAML list of objects with `name`, `source`, and `version` keys, for example:
+
+```yaml
+RequiredProviders:
+  - name: aws
+    source: hashicorp/aws
+    version: "~> 5.0"
+```
+
+## Validate the rendered module
 
 ```bash
 terraform fmt -check
 terraform init -backend=false
 terraform validate
 ```
-
-Add provider-specific resources in `main.tf` after you decide what the module should manage.
-
-When you add a real provider, pin it in `versions.tf` with a `required_providers` block.

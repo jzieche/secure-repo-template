@@ -1,0 +1,37 @@
+variables:
+  - name: Name
+    description: Name used to identify the Terraform module
+    type: string
+    default: example-module
+    validations:
+      - required
+      - regex("^[A-Za-z0-9](?:[A-Za-z0-9_.-]*[A-Za-z0-9])?$")
+
+  - name: Description
+    description: Description for the Terraform module
+    type: string
+    default: Example Terraform module scaffold
+
+  - name: Enabled
+    description: Whether the module should be enabled by default
+    type: bool
+    default: true
+
+  - name: Tags
+    description: Default tags to attach to resources created by the module
+    type: map
+    default:
+      env: dev
+      owner: platform
+
+  - name: RequiredVersion
+    description: Terraform CLI version constraint for the module
+    type: string
+    default: ">= 1.6.0"
+
+  - name: RequiredProviders
+    description: >
+      Optional list of provider constraints to render into versions.tf. Each entry
+      should include name, source, and version keys.
+    type: list
+    default: []
