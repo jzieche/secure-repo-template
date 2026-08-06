@@ -89,13 +89,16 @@ After following the runbook and generating a repo, validate the rendered scaffol
 #### Helm scaffold
 
 ```bash
-helm lint .
-helm template test-release .
+boilerplate --template-url scaffolds/helm --output-folder /tmp/secure-repo-template-helm --non-interactive
+helm lint /tmp/secure-repo-template-helm
+helm template test-release /tmp/secure-repo-template-helm
 ```
 
 #### Terraform module scaffold
 
 ```bash
+boilerplate --template-url scaffolds/terraform-module --output-folder /tmp/secure-repo-template-terraform --non-interactive
+cd /tmp/secure-repo-template-terraform
 terraform fmt -check
 terraform init -backend=false
 terraform validate
