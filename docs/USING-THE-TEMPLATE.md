@@ -1,6 +1,6 @@
 # Using the Secure Repository Template
 
-This guide covers the manual bootstrap details for the security baseline. For the full repo-creation flow, scaffold selection, GitHub auth, and worktree handoff steps, use [RUNBOOK.mdx](../RUNBOOK.mdx).
+This guide covers the manual bootstrap details for the security baseline. For the full repo-creation flow, scaffold selection, GitHub auth, and worktree handoff steps, use [RUNBOOK.mdx](../RUNBOOK.mdx); it renders the Helm and Terraform scaffolds from Boilerplate templates directly into the cloned repository.
 
 ## Manual Setup (Advanced Users)
 
