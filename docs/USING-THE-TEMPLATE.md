@@ -82,6 +82,18 @@ After setup:
 4. **Configure teams:** Add your release team and required reviewers to your organization
 5. **Test with a branch:** Create a test branch following the naming convention and verify protection rules are enforced
 
+### Validation
+
+After following the runbook and generating a repo, validate the rendered scaffold with the toolchain that matches the chosen path:
+
+```bash
+helm lint .
+helm template test-release .
+terraform fmt -check
+terraform init -backend=false
+terraform validate
+```
+
 ## Troubleshooting
 
 ### "Required command 'gh' not found"
