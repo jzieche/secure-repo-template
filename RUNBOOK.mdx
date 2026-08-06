@@ -7,7 +7,6 @@ Use this runbook to create a new repository from the template, apply the shared 
 ## 1) Create the repository
 
 <Inputs id="repo-config">
-```yaml
 OrgName:
   description: GitHub organization name
 RepoName:
@@ -19,7 +18,6 @@ Visibility:
   description: Repository visibility
   options: [private, public]
   default: private
-```
 </Inputs>
 
 <Command id="create-repo" githubAuthId="gh-auth" inputsId="repo-config" path="scripts/runbook/create-repo-from-template.sh" />
