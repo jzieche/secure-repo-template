@@ -1,6 +1,6 @@
 # Using the Secure Repository Template
 
-This guide covers the manual bootstrap details for the security baseline. For the full repo-creation flow, scaffold selection, and handoff steps, use [RUNBOOK.md](../RUNBOOK.md).
+This guide covers the manual bootstrap details for the security baseline. For the full repo-creation flow, scaffold selection, and handoff steps, use [RUNBOOK.mdx](../RUNBOOK.mdx).
 
 ## Manual Setup (Advanced Users)
 

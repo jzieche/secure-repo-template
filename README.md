@@ -13,7 +13,7 @@ Replace `OWNER` with the GitHub account or organization that owns the template r
 
 ## Start here
 
-- Read [RUNBOOK.md](./RUNBOOK.md) for the full repo-creation flow.
+- Read [RUNBOOK.mdx](./RUNBOOK.mdx) for the full repo-creation flow.
 - Use [docs/USING-THE-TEMPLATE.md](./docs/USING-THE-TEMPLATE.md) for manual bootstrap details.
 - Review [docs/BRANCH-NAMING.md](./docs/BRANCH-NAMING.md) and [docs/SECURITY-SETTINGS.md](./docs/SECURITY-SETTINGS.md) before opening security-sensitive PRs.
 

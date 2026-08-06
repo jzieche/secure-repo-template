@@ -1,0 +1,99 @@
+# Gruntworks Repo Creation Runbook
+
+Use this runbook to create a new repository from the template, apply the shared security baseline, choose one scaffold, and verify the result.
+
+## 1) Create the repository
+
+<Inputs id="repo-config">
+OrgName:
+  description: GitHub organization name
+RepoName:
+  description: New repository name
+TemplateOwner:
+  description: Owner of the secure-repo-template repository
+  default: gruntwork-io
+Visibility:
+  description: Repository visibility
+  options: [private, public]
+  default: private
+</Inputs>
+
+<Command
+  id="verify-gh-auth"
+  title="Verify GitHub authentication"
+  description="Confirm GitHub CLI authentication before creating a repository."
+  command="gh auth status"
+  successMessage="GitHub CLI authentication is ready."
+  failMessage="GitHub CLI is not authenticated. Run 'gh auth login' and retry."
+/>
+
+<Command
+  id="create-repo-from-template"
+  title="Create repository from template"
+  description="Create and clone the new repository from the secure template."
+  inputsId="repo-config"
+  path="scripts/runbook/create-repo-from-template.sh"
+  successMessage="Repository created and cloned."
+  failMessage="Failed to create repository from template."
+/>
+
+<Command
+  id="initialize-repo"
+  title="Run initialization and baseline verification"
+  description="Run init.sh and verify the secure baseline in the new repository."
+  inputsId="repo-config"
+  path="scripts/runbook/initialize-repo.sh"
+  successMessage="Initialization completed and baseline verification passed."
+  failMessage="Initialization or verification failed. Review the command output."
+/>
+
+## 2) Complete post-setup work
+
+- Review the repo settings created by bootstrap.
+- Confirm the release team and production reviewers are correct.
+- Confirm branch protection, rulesets, and security settings are active.
+- Update the root `README.md` with repo-specific details.
+- Review `docs/BRANCH-NAMING.md` before opening the first PR.
+- Review `docs/SECURITY-SETTINGS.md` before changing security-sensitive settings.
+
+## 3) Choose one scaffold
+
+Run exactly one of the following paths.
+
+### Helm scaffold (Helm 3.0+)
+
+<Command
+  id="apply-helm-scaffold"
+  title="Apply Helm scaffold"
+  description="Copy the Helm scaffold into the repository root, keep scaffold notes in docs, validate, and remove scaffold source directories."
+  inputsId="repo-config"
+  path="scripts/runbook/apply-helm-scaffold.sh"
+  successMessage="Helm scaffold applied and validated."
+  failMessage="Helm scaffold setup failed."
+/>
+
+### Terraform module scaffold (Terraform 1.6.0+)
+
+<Command
+  id="apply-terraform-scaffold"
+  title="Apply Terraform module scaffold"
+  description="Copy the Terraform module scaffold into the repository root, keep scaffold notes in docs, validate, and remove scaffold source directories."
+  inputsId="repo-config"
+  path="scripts/runbook/apply-terraform-scaffold.sh"
+  successMessage="Terraform scaffold applied and validated."
+  failMessage="Terraform scaffold setup failed."
+/>
+
+## 4) Verify and hand off
+
+- Confirm only the intended scaffold is present.
+- Run the expected validation command set for that scaffold.
+- Record repo-specific changes made during setup.
+- Hand off the repository with verification notes.
+
+## Troubleshooting
+
+- If `gh auth status` fails, run `gh auth login` and retry.
+- If repository setup fails, confirm your GitHub token has the required permissions.
+- If scaffold validation fails, confirm the required tool is installed and rerun the selected scaffold command.
+- If release-team or reviewer values are incorrect, rerun `./init.sh` in the new repository.
