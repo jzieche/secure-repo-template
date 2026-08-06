@@ -46,6 +46,7 @@ Use Helm when the repo should ship Kubernetes manifests as a chart.
 ```bash
 if [ -d scaffolds/helm ]; then
   rsync -a --exclude 'README.md' scaffolds/helm/ ./
+  mkdir -p docs
   cp scaffolds/helm/README.md docs/HELM-SCAFFOLD.md
   helm lint .
   helm template test-release .
@@ -64,6 +65,7 @@ Use Terraform when the repo should publish reusable infrastructure code.
 ```bash
 if [ -d scaffolds/terraform-module ]; then
   rsync -a --exclude 'README.md' scaffolds/terraform-module/ ./
+  mkdir -p docs
   cp scaffolds/terraform-module/README.md docs/TERRAFORM-MODULE-SCAFFOLD.md
   terraform fmt -check
   terraform init -backend=false
