@@ -43,19 +43,20 @@ Expected: either the current `.gitignore` contents or the single line `.gitignor
 
 - [ ] **Step 2: Write the ignore file content**
 
-If `.gitignore` does not exist yet, create it with exactly:
-
-```gitignore
+Run:
+```bash
+if test -f .gitignore; then
+  grep -Fx '.superpowers/' .gitignore >/dev/null || printf '\n.superpowers/\n' >> .gitignore
+  grep -Fx 'docs/superpowers/' .gitignore >/dev/null || printf 'docs/superpowers/\n' >> .gitignore
+else
+  cat > .gitignore <<'EOF'
 .superpowers/
 docs/superpowers/
+EOF
+fi
 ```
 
-If `.gitignore` already exists, append only the missing entries so the file contains these exact lines somewhere:
-
-```gitignore
-.superpowers/
-docs/superpowers/
-```
+Expected: `.gitignore` exists and contains both ignore lines exactly once or more
 
 - [ ] **Step 3: Verify the ignore rules are present**
 
@@ -186,11 +187,14 @@ Expected: the two ignore lines are printed, both moved files exist, and `git sta
 
 - [ ] **Step 4: Commit the directory cleanup if it changed tracked state**
 
-If `git status --short` still shows tracked deletions for empty directories or other intended cleanup state, run:
-
+Run:
 ```bash
-git add -A docs/superpowers
-git commit -m "chore: remove obsolete superpowers docs tree"
+if git status --short docs/superpowers | grep -q .; then
+  git add -A docs/superpowers
+  git commit -m "chore: remove obsolete superpowers docs tree"
+else
+  echo "No tracked docs/superpowers cleanup changes remain"
+fi
 ```
 
-If `git status --short` shows no remaining tracked cleanup changes after Task 2, skip this commit step.
+Expected: either a cleanup commit is created, or the command prints `No tracked docs/superpowers cleanup changes remain`
