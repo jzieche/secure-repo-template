@@ -1,0 +1,6 @@
+apiVersion: v2
+name: {{ .ChartName }}
+description: {{ printf "%q" .Description }}
+type: application
+version: {{ .Version }}
+appVersion: "{{ .AppVersion }}"

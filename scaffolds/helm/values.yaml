@@ -1,0 +1,18 @@
+replicaCount: {{ .ReplicaCount }}
+
+image:
+  repository: "{{ .ImageRepository }}"
+  tag: "{{ .ImageTag }}"
+  pullPolicy: {{ .ImagePullPolicy }}
+
+nameOverride: "{{ .NameOverride }}"
+fullnameOverride: "{{ .FullnameOverride }}"
+
+service:
+  type: {{ .ServiceType }}
+  port: {{ .ServicePort }}
+  targetPort: {{ .TargetPort }}
+
+containerPort: {{ .ContainerPort }}
+resources:
+{{ .Resources | toYaml | nindent 2 }}

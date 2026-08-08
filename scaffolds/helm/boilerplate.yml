@@ -1,0 +1,75 @@
+variables:
+  - name: ChartName
+    description: Name of the Helm chart
+    type: string
+    default: example-app
+
+  - name: Description
+    description: Description for the Helm chart
+    type: string
+    default: A minimal Helm chart scaffold for new repositories.
+
+  - name: Version
+    description: Chart version
+    type: string
+    default: 0.1.0
+
+  - name: AppVersion
+    description: Application version
+    type: string
+    default: 1.0.0
+
+  - name: ImageRepository
+    description: Default container image repository
+    type: string
+    default: ghcr.io/example/example-app
+
+  - name: ImageTag
+    description: Default container image tag
+    type: string
+    default: 1.0.0
+
+  - name: ImagePullPolicy
+    description: Default container image pull policy
+    type: string
+    default: IfNotPresent
+
+  - name: ReplicaCount
+    description: Default replica count
+    type: int
+    default: 1
+
+  - name: ServiceType
+    description: Default Kubernetes Service type
+    type: string
+    default: ClusterIP
+
+  - name: ServicePort
+    description: Default Kubernetes Service port
+    type: int
+    default: 80
+
+  - name: ContainerPort
+    description: Default container port
+    type: int
+    default: 8080
+
+  - name: TargetPort
+    description: Default Kubernetes Service targetPort
+    type: string
+    default: http
+
+  - name: NameOverride
+    description: Optional Helm nameOverride value
+    type: string
+    default: ""
+
+  - name: FullnameOverride
+    description: Optional Helm fullnameOverride value
+    type: string
+    default: ""
+
+  - name: Resources
+    description: Default Helm resources value
+    type: map
+    default: {}

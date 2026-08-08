@@ -1,0 +1,11 @@
+RUNBOOK.mdx
+README.md
+boilerplate.yml
+docs/
+scaffolds/
+init.sh
+scripts/
+.superpowers/
+.github/
+SECURITY.md
+.git/

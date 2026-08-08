@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ printf `{{ include "%s.fullname" . }}` .ChartName }}
+  labels:
+    {{ printf `{{- include "%s.labels" . | nindent 4 }}` .ChartName }}
+spec:
+  replicas: {{ `{{ .Values.replicaCount }}` }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ printf `{{ include "%s.name" . }}` .ChartName }}
+      app.kubernetes.io/instance: {{ `{{ .Release.Name }}` }}
+  template:
+    metadata:
+      labels:
+        {{ printf `{{- include "%s.labels" . | nindent 8 }}` .ChartName }}
+    spec:
+      containers:
+        - name: {{ printf `{{ include "%s.name" . }}` .ChartName }}
+          image: "{{ `{{ .Values.image.repository }}` }}:{{ `{{ .Values.image.tag }}` }}"
+          imagePullPolicy: {{ `{{ .Values.image.pullPolicy }}` }}
+          ports:
+            - name: http
+              containerPort: {{ `{{ .Values.containerPort }}` }}
+          {{ `{{- with .Values.resources }}` }}
+          resources:
+{{ `{{ toYaml . | nindent 12 }}` }}
+          {{ `{{- end }}` }}

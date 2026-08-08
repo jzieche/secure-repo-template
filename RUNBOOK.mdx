@@ -1,0 +1,85 @@
+# Repository Creation Runbook
+
+Use this runbook to create a new repository from the template, apply the shared security baseline, choose one scaffold, and verify the result.
+
+<GitHubAuth id="gh-auth" title="Authenticate to GitHub" />
+
+## 1) Create the repository
+
+<Inputs id="repo-config">
+```yaml
+variables:
+  - name: OrgName
+    description: GitHub organization name
+    validations:
+      - required
+
+  - name: RepoName
+    description: New repository name
+    validations:
+      - required
+
+  - name: TemplateOwner
+    description: Owner of the secure-repo-template repository
+    default: gruntwork-io
+
+  - name: Visibility
+    description: Repository visibility
+    type: enum
+    options: [private, public]
+    default: private
+```
+</Inputs>
+
+<Command id="create-repo" githubAuthId="gh-auth" inputsId="repo-config" path="scripts/runbook/create-repo-from-template.sh" />
+
+<GitClone id="clone-new-repo" githubAuthId="gh-auth" prefilledUrl="https://github.com/{{ .inputs.OrgName }}/{{ .inputs.RepoName }}" prefilledLocalPath="./{{ .inputs.RepoName }}" />
+
+<Command id="initialize-repo" githubAuthId="gh-auth" path="scripts/runbook/initialize-repo.sh" />
+
+## 2) Complete post-setup work
+
+- Review the repo settings created by bootstrap.
+- Confirm the release team and production reviewers are correct.
+- Confirm branch protection, rulesets, and security settings are active.
+- Update the root `README.md` with repo-specific details.
+- Review `docs/BRANCH-NAMING.md` before opening the first PR.
+- Review `docs/SECURITY-SETTINGS.md` before changing security-sensitive settings.
+
+## 3) Choose one scaffold
+
+Run exactly one of the following paths.
+
+### Helm scaffold (Helm 3.0+)
+
+<Command id="backup-readme-helm" command='cd "$REPO_FILES" && mkdir -p .runbook-backups && cp README.md .runbook-backups/README.md' />
+
+<Template id="helm-scaffold" path="scaffolds/helm" target="worktree" />
+
+<Check id="helm-verify" command='cd "$REPO_FILES" && helm lint . && helm template test-release .' />
+
+<Command id="restore-readme-helm" command='cd "$REPO_FILES" && cp .runbook-backups/README.md README.md && mkdir -p docs && cp scaffolds/helm/README.md docs/HELM-SCAFFOLD.md && rm -rf .runbook-backups scaffolds/terraform-module' />
+
+### Terraform module scaffold (Terraform 1.6.0+)
+
+<Command id="backup-readme-terraform" command='cd "$REPO_FILES" && mkdir -p .runbook-backups && cp README.md .runbook-backups/README.md' />
+
+<Template id="terraform-scaffold" path="scaffolds/terraform-module" target="worktree" />
+
+<Check id="terraform-verify" command='cd "$REPO_FILES" && terraform fmt -check && terraform init -backend=false && terraform validate' />
+
+<Command id="restore-readme-terraform" command='cd "$REPO_FILES" && cp .runbook-backups/README.md README.md && mkdir -p docs && cp scaffolds/terraform-module/README.md docs/TERRAFORM-MODULE-SCAFFOLD.md && rm -rf .runbook-backups scaffolds/helm' />
+
+## 4) Verify and hand off
+
+- Confirm only the intended scaffold is present.
+- Run the expected validation command set for that scaffold.
+- Record repo-specific changes made during setup.
+- Hand off the repository with verification notes.
+
+## Troubleshooting
+
+- If GitHub authentication fails, retry the runbook auth step before creating the repository.
+- If repository setup fails, confirm your GitHub token has the required permissions.
+- If scaffold validation fails, confirm the required tool is installed and rerun the selected scaffold path.
+- If release-team or reviewer values are incorrect, rerun `./init.sh` in the cloned repository.

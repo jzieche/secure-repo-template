@@ -1,51 +1,28 @@
 # GitHub Secure Repository Template
 
-This repository is a security-first starter template.
+Security-first starter template for new repositories.
 
-It includes:
+Start with [RUNBOOK.mdx](./RUNBOOK.mdx) for the supported repository creation, cloning, scaffold selection, and verification flow.
 
-- a disclosure policy in [SECURITY.md](./SECURITY.md)
-- branch naming guidance in [docs/BRANCH-NAMING.md](./docs/BRANCH-NAMING.md)
-- security baseline details in [docs/SECURITY-SETTINGS.md](./docs/SECURITY-SETTINGS.md)
-- GitHub Actions workflows for CodeQL, dependency review, Scorecard, and zizmor
-- scheduled stale-item and branch-pruning automation
-- bootstrap and verification scripts for the secure baseline
+## Start here
 
-## Quick Start
+- Read [RUNBOOK.mdx](./RUNBOOK.mdx) for the full repo-creation flow.
+- Use [docs/USING-THE-TEMPLATE.md](./docs/USING-THE-TEMPLATE.md) for manual bootstrap details.
+- Review [docs/BRANCH-NAMING.md](./docs/BRANCH-NAMING.md) and [docs/SECURITY-SETTINGS.md](./docs/SECURITY-SETTINGS.md) before opening security-sensitive PRs.
 
-The fastest way to get started:
+## Using the runbook
 
-```bash
-gh repo create my-org/my-repo --template secure-repo-template --private
-cd my-repo
-./init.sh
-scripts/verify-security.sh
-```
+The interactive runbook requires a Gruntworks runbook viewer. Install instructions:
 
-The `init.sh` script automates the entire setup process:
+- **VSCode:** Install the [Gruntworks Runbooks extension](https://marketplace.visualstudio.com/items?itemName=gruntwork-io.runbooks)
+- **Web:** View at [runbooks.gruntwork.io](https://runbooks.gruntwork.io/)
+- **CLI:** Use the [gruntwork-io/runbooks](https://github.com/gruntwork-io/runbooks) repository for hosting and rendering
 
-- **Auto-detects** your GitHub repository from the current directory
-- **Prompts for configuration** with sensible defaults (release team, production reviewers, required checks, wait timers)
-- **Applies the security baseline** including branch protection rules, rulesets, and security policies
-- **Cleans up template artifacts** automatically (test files, example workflows)
-- **Supports resume** – if initialization is interrupted, run `./init.sh` again to resume from the last checkpoint
-- **Verifies security** – run `scripts/verify-security.sh` afterward to confirm all settings are correctly applied
+## Included baseline
 
-The script provides clear feedback at each step and allows previewing changes before applying them (dry-run mode).
-
-## Manual Setup (Advanced)
-
-For detailed step-by-step instructions and environment variable reference, see [docs/USING-THE-TEMPLATE.md](./docs/USING-THE-TEMPLATE.md).
-
-## Before you open a security-sensitive PR
-
-- Review the checklist in `.github/PULL_REQUEST_TEMPLATE.md`
-- Confirm the branch name matches [docs/BRANCH-NAMING.md](./docs/BRANCH-NAMING.md)
-- Review the security baseline in [docs/SECURITY-SETTINGS.md](./docs/SECURITY-SETTINGS.md)
-
-## What is already configured
-
-- security policy files for disclosure and intake
+- [SECURITY.md](./SECURITY.md)
+- [docs/BRANCH-NAMING.md](./docs/BRANCH-NAMING.md)
+- [docs/SECURITY-SETTINGS.md](./docs/SECURITY-SETTINGS.md)
 - CodeQL, dependency review, Scorecard, and zizmor workflows
-- stale-item cleanup and branch pruning workflows
-- bootstrap and verification scripts for repository security settings
+- stale-item and branch-pruning automation
+- bootstrap and verification scripts for the secure baseline
