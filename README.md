@@ -10,6 +10,14 @@ Start with [RUNBOOK.mdx](./RUNBOOK.mdx) for the supported repository creation, c
 - Use [docs/USING-THE-TEMPLATE.md](./docs/USING-THE-TEMPLATE.md) for manual bootstrap details.
 - Review [docs/BRANCH-NAMING.md](./docs/BRANCH-NAMING.md) and [docs/SECURITY-SETTINGS.md](./docs/SECURITY-SETTINGS.md) before opening security-sensitive PRs.
 
+## Using the runbook
+
+The interactive runbook requires a Gruntworks runbook viewer. Install instructions:
+
+- **VSCode:** Install the [Gruntworks Runbooks extension](https://marketplace.visualstudio.com/items?itemName=gruntwork-io.runbooks)
+- **Web:** View at [runbooks.gruntwork.io](https://runbooks.gruntwork.io/)
+- **CLI:** Use the [gruntwork-io/runbooks](https://github.com/gruntwork-io/runbooks) repository for hosting and rendering
+
 ## Included baseline
 
 - [SECURITY.md](./SECURITY.md)
