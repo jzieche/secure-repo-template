@@ -50,7 +50,7 @@ Defined in `boilerplate.yml`. All variables have sensible defaults; consumers ov
 | Variable | Description | Default |
 |---|---|---|
 | `ReleaseTeamSlug` | GitHub team slug permitted to create/push tags | `release-team` |
-| `RequiredChecks` | Comma-separated CI check names required on `main` | `CodeQL,Dependency Review` |
+| `RequiredChecks` | JSON array of check names required on `main` (e.g. `["CodeQL","Dependency Review"]`) | `["CodeQL","Dependency Review"]` |
 | `RequiredApprovals` | Number of required approving reviews on `main` | `2` |
 
 Edge cases not covered by variables (e.g. custom bypass actors, environment-gated rules) are marked with `# TODO:` comments in the rendered JSON files.
@@ -103,21 +103,30 @@ done
 
 The script requires `.github/rulesets/` to exist. If it is absent the script logs an error and exits non-zero. This invariant is satisfied because the runbook renders the scaffold before calling `initialize-repo.sh`.
 
-The `required_checks_json` and `production_reviewers_json` construction via Python is removed from the bootstrap script preamble — those values are now baked into the rendered JSON by boilerplate.
+The `required_checks_json` construction via Python (which converts a comma-separated string to a JSON array) is removed from the bootstrap script preamble — `RequiredChecks` is now a JSON array rendered directly by boilerplate. The `production_reviewers_json` Python block remains; it is not affected by this change.
 
 ## Runbook Changes
 
-A new step is inserted between "Complete post-setup work" and "Choose one scaffold":
+The existing `<Command id="initialize-repo">` step (which runs `init.sh` + `bootstrap-security.sh`) is **moved** to after the rulesets scaffold is rendered, so `.github/rulesets/` exists when bootstrap runs. The runbook steps become:
 
 ```mdx
-## 2.5) Apply repository rulesets
+## 1) Create the repository
+... (create-repo, clone-new-repo — unchanged)
+
+## 2) Apply repository rulesets
 
 <Template id="rulesets-scaffold" path="scaffolds/rulesets" target="worktree" inputsId="repo-config" />
 
-<Command id="apply-rulesets" githubAuthId="gh-auth" path="scripts/runbook/initialize-repo.sh" />
-```
+<Check id="rulesets-lint" command='cd "$REPO_FILES" && for f in .github/rulesets/*.json; do python -m json.tool "$f" > /dev/null; done' />
 
-Wait — `initialize-repo.sh` currently also calls `./init.sh` (which runs `bootstrap-security.sh`). The ordering must ensure `.github/rulesets/` is rendered before `initialize-repo.sh` runs. The new `<Template>` step satisfies this.
+<Command id="initialize-repo" githubAuthId="gh-auth" path="scripts/runbook/initialize-repo.sh" />
+
+## 3) Complete post-setup work
+... (checklist — unchanged)
+
+## 4) Choose one scaffold
+... (Helm/Terraform — unchanged)
+```
 
 The `<Inputs>` block at the top of the runbook is extended with the three ruleset boilerplate variables (`ReleaseTeamSlug`, `RequiredChecks`, `RequiredApprovals`) so they are available to the `<Template>` step.
 
