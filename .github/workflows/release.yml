@@ -11,12 +11,9 @@ jobs:
     name: Run release-please
     runs-on: ubuntu-latest
     permissions:
-      # Required for release-please to create tags and GitHub Releases.
-      contents: write
-      # Required for release-please to open or update release PRs.
-      pull-requests: write
-      # Required for release-please to label and manage release PR metadata.
-      issues: write
+      contents: write # release-please creates tags and GitHub Releases
+      pull-requests: write # release-please opens and updates release PRs
+      issues: write # release-please applies labels/metadata to release PRs
     timeout-minutes: 20
     concurrency:
       group: release-${{ github.workflow }}-${{ github.ref }}
