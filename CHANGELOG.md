@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.1](https://github.com/jzieche/secure-repo-template/compare/v0.3.0...v0.3.1) (2026-08-11)
+
+
+### Bug Fixes
+
+* runbook template owner and add shellcheck hooks ([#8](https://github.com/jzieche/secure-repo-template/issues/8)) ([aa857e5](https://github.com/jzieche/secure-repo-template/commit/aa857e52423400dcd0519fe47c0adab04b71a883))
+
 ## [0.3.0](https://github.com/jzieche/secure-repo-template/compare/v0.2.0...v0.3.0) (2026-08-11)
 
 
