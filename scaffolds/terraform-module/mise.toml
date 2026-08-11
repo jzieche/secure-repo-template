@@ -1,0 +1,7 @@
+[tools]
+pre-commit = "latest"
+shellcheck = "latest"
+
+[tasks.setup]
+description = "Install pre-commit hooks"
+run = "pre-commit install"
