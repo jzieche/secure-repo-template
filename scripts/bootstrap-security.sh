@@ -6,21 +6,9 @@ script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "${script_dir}/lib/security-gh.sh"
 
 require_command gh
-require_command python
 require_env RELEASE_TEAM_SLUG
 require_env PRODUCTION_REVIEWERS
 require_env PRODUCTION_WAIT_TIMER_MINUTES
-require_env REQUIRED_CHECKS
-
-required_checks_json="$(
-  python -c '
-import json
-import sys
-
-checks = [item.strip() for item in sys.argv[1].split(",") if item.strip()]
-print(json.dumps([{"context": item} for item in checks]))
-' "$REQUIRED_CHECKS"
-)"
 
 production_reviewers_json="$(
   python -c '
@@ -57,88 +45,6 @@ enable_security_features() {
     "secret_scanning": { "status": "enabled" },
     "secret_scanning_push_protection": { "status": "enabled" }
   }
-}
-JSON
-}
-
-main_ruleset() {
-  cat <<JSON
-{
-  "name": "main",
-  "target": "branch",
-  "enforcement": "active",
-  "conditions": {
-    "ref_name": {
-      "include": ["refs/heads/main"]
-    }
-  },
-  "rules": [
-    { "type": "deletion" },
-    { "type": "non_fast_forward" },
-    { "type": "required_linear_history" },
-    { "type": "required_signatures" },
-    {
-      "type": "pull_request",
-      "parameters": {
-        "required_approving_review_count": 2,
-        "dismiss_stale_reviews_on_push": true,
-        "require_code_owner_review": true,
-        "require_last_push_approval": false
-      }
-    },
-    {
-      "type": "required_status_checks",
-      "parameters": {
-        "required_status_checks": ${required_checks_json}
-      }
-    }
-  ]
-}
-JSON
-}
-
-all_branches_ruleset() {
-  cat <<'JSON'
-{
-  "name": "all-branches",
-  "target": "branch",
-  "enforcement": "active",
-  "conditions": {
-    "ref_name": {
-      "include": ["refs/heads/*"]
-    }
-  },
-  "rules": [
-    { "type": "deletion" },
-    { "type": "non_fast_forward" },
-    { "type": "required_signatures" }
-  ]
-}
-JSON
-}
-
-tag_ruleset() {
-  cat <<JSON
-{
-  "name": "tags",
-  "target": "tag",
-  "enforcement": "active",
-  "conditions": {
-    "ref_name": {
-      "include": ["refs/tags/*"]
-    }
-  },
-  "bypass_actors": [
-    {
-      "actor_type": "Team",
-      "slug": "${RELEASE_TEAM_SLUG}",
-      "bypass_mode": "always"
-    }
-  ],
-  "rules": [
-    { "type": "deletion" },
-    { "type": "required_signatures" }
-  ]
 }
 JSON
 }
@@ -183,9 +89,15 @@ JSON
 main() {
   apply_repo_settings
   enable_security_features
-  upsert_ruleset "main" "$(main_ruleset)"
-  upsert_ruleset "all-branches" "$(all_branches_ruleset)"
-  upsert_ruleset "tags" "$(tag_ruleset)"
+  require_dir ".github/rulesets"
+
+  for ruleset_file in .github/rulesets/*.json; do
+    if [[ -f "${ruleset_file}" ]]; then
+      ruleset_name="$(basename "${ruleset_file}" .json)"
+      log "apply ruleset ${ruleset_name}"
+      upsert_ruleset "${ruleset_name}" "$(cat "${ruleset_file}")"
+    fi
+  done
   configure_environment
 }
 
