@@ -26,3 +26,11 @@ The interactive runbook requires a Gruntworks runbook viewer. Install instructio
 - CodeQL, dependency review, Scorecard, and zizmor workflows
 - stale-item and branch-pruning automation
 - bootstrap and verification scripts for the secure baseline
+
+## Releases
+
+This repository uses Release Please via `.github/workflows/release.yml`.
+
+- Merge conventional commits (`feat:`, `fix:`, `deps:`) into `main`.
+- Release Please opens or updates a release PR.
+- Merging the release PR creates a tag, updates `CHANGELOG.md`, and publishes a GitHub Release.
