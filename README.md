@@ -37,3 +37,14 @@ This repository uses Release Please via `.github/workflows/release.yml`.
 - Add a repository secret named `RELEASE_PLEASE_TOKEN` with a token that can
   write `contents`, `issues`, and `pull-requests`; the workflow fails fast if
   it is missing.
+
+## Local development
+
+This repo uses [mise](https://mise.jdx.dev/) to manage local tool versions and [pre-commit](https://pre-commit.com/) to enforce shell script linting.
+
+```bash
+mise install        # installs pre-commit and shellcheck
+mise run setup      # installs the pre-commit git hook
+```
+
+After running `mise run setup`, shellcheck runs automatically on every `git commit` for any staged `.sh` files.
