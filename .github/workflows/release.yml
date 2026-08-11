@@ -6,22 +6,26 @@ on:
       - main
   workflow_dispatch:
 
-permissions:
-  contents: write
-  issues: write
-  pull-requests: write
-
 jobs:
   release-please:
     name: Run release-please
     runs-on: ubuntu-latest
+    permissions:
+      # Required for release-please to create tags and GitHub Releases.
+      contents: write
+      # Required for release-please to open or update release PRs.
+      pull-requests: write
+      # Required for release-please to label and manage release PR metadata.
+      issues: write
     timeout-minutes: 20
     concurrency:
       group: release-${{ github.workflow }}-${{ github.ref }}
       cancel-in-progress: true
     steps:
       - name: Checkout repository
-        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          persist-credentials: false
       - name: Validate release token secret
         env:
           RELEASE_PLEASE_TOKEN: ${{ secrets.RELEASE_PLEASE_TOKEN }}
@@ -31,7 +35,7 @@ jobs:
             exit 1
           fi
       - name: Run release-please
-        uses: googleapis/release-please-action@8b8fd2cc23b2e18957157a9d923d75aa0c6f6ad5
+        uses: googleapis/release-please-action@5c625bfb5d1ff62eadeeb3772007f7f66fdcf071 # v4.4.1
         with:
           token: ${{ secrets.RELEASE_PLEASE_TOKEN }}
           config-file: .release-please-config.json
