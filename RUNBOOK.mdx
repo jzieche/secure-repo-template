@@ -28,6 +28,24 @@ variables:
     type: enum
     options: [private, public]
     default: private
+
+  - name: ReleaseTeamSlug
+    description: GitHub team slug permitted to create/push tags
+    type: string
+    default: release-team
+
+  - name: RequiredChecks
+    description: CI check names required on main
+    type: list
+    options:
+      - CodeQL
+      - Dependency Review
+    default: [CodeQL, "Dependency Review"]
+
+  - name: RequiredApprovals
+    description: Number of required approving reviews on main
+    type: number
+    default: 2
 ```
 </Inputs>
 
@@ -35,9 +53,15 @@ variables:
 
 <GitClone id="clone-new-repo" githubAuthId="gh-auth" prefilledUrl="https://github.com/{{ .inputs.OrgName }}/{{ .inputs.RepoName }}" prefilledLocalPath="./{{ .inputs.RepoName }}" />
 
+## 2) Apply repository rulesets
+
+<Template id="rulesets-scaffold" path="scaffolds/rulesets" target="worktree" inputsId="repo-config" />
+
+<Check id="rulesets-lint" command='cd "$REPO_FILES" && for f in .github/rulesets/*.json; do python -m json.tool "$f" > /dev/null || exit 1; done' />
+
 <Command id="initialize-repo" githubAuthId="gh-auth" path="scripts/runbook/initialize-repo.sh" />
 
-## 2) Complete post-setup work
+## 3) Complete post-setup work
 
 - Review the repo settings created by bootstrap.
 - Confirm the release team and production reviewers are correct.
@@ -46,7 +70,7 @@ variables:
 - Review `docs/BRANCH-NAMING.md` before opening the first PR.
 - Review `docs/SECURITY-SETTINGS.md` before changing security-sensitive settings.
 
-## 3) Choose one scaffold
+## 4) Choose one scaffold
 
 Run exactly one of the following paths.
 
@@ -70,7 +94,7 @@ Run exactly one of the following paths.
 
 <Command id="restore-readme-terraform" command='cd "$REPO_FILES" && cp .runbook-backups/README.md README.md && mkdir -p docs && cp scaffolds/terraform-module/README.md docs/TERRAFORM-MODULE-SCAFFOLD.md && rm -rf .runbook-backups scaffolds/helm' />
 
-## 4) Verify and hand off
+## 5) Verify and hand off
 
 - Confirm only the intended scaffold is present.
 - Run the expected validation command set for that scaffold.
