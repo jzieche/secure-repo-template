@@ -3,6 +3,6 @@ repos:
     hooks:
       - id: shellcheck
         name: shellcheck
-        entry: shellcheck
+        entry: shellcheck -x
         language: system
         types: [shell]
