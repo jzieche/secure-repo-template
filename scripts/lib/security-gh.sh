@@ -15,6 +15,14 @@ require_env() {
   : "${!var_name:?${var_name} must be set}"
 }
 
+require_dir() {
+  local dir="$1"
+  if [[ ! -d "${dir}" ]]; then
+    log "error: directory not found: ${dir}" >&2
+    exit 1
+  fi
+}
+
 require_command() {
   command -v "$1" >/dev/null 2>&1 || {
     printf 'missing command: %s\n' "$1" >&2
