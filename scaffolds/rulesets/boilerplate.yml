@@ -1,0 +1,22 @@
+template:
+  var_name_prefix: ""
+  delimiter: "."
+
+variables:
+  - name: ReleaseTeamSlug
+    description: GitHub team slug permitted to create/push tags
+    type: string
+    default: "release-team"
+
+  - name: RequiredChecks
+    description: JSON array of CI check names required on main
+    type: list
+    items_type: string
+    default:
+      - CodeQL
+      - Dependency Review
+
+  - name: RequiredApprovals
+    description: Number of required approving reviews on main
+    type: number
+    default: 2
