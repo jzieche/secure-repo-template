@@ -34,3 +34,6 @@ This repository uses Release Please via `.github/workflows/release.yml`.
 - Merge conventional commits (`feat:`, `fix:`, `deps:`) into `main`.
 - Release Please opens or updates a release PR.
 - Merging the release PR creates a tag, updates `CHANGELOG.md`, and publishes a GitHub Release.
+- Add a repository secret named `RELEASE_PLEASE_TOKEN` with a token that can
+  write `contents`, `issues`, and `pull-requests`; the workflow fails fast if
+  it is missing.
